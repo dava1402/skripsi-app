@@ -6,10 +6,17 @@ use App\Filament\Resources\Roles\Pages\CreateRole;
 use App\Filament\Resources\Roles\Pages\EditRole;
 use App\Filament\Resources\Roles\Pages\ListRoles;
 use App\Filament\Resources\Roles\Schemas\RoleForm;
+use App\Filament\Resources\Roles\Tables\RolesTable;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -28,23 +35,8 @@ class RoleResource extends Resource
 
     public static function table(Table $table): Table
 {
-    return $table
-        ->columns([
-            //
-        ])
-        ->filters([
-            // Tables\Filters\TrashedFilter::make(),
-        ])
-        ->actions([
-            // Tables\Actions\EditAction::make(),
-        ])
-        ->bulkActions([
-            // Tables\Actions\BulkActionGroup::make([
-            //     Tables\Actions\DeleteBulkAction::make(),
-            //     Tables\Actions\ForceDeleteBulkAction::make(),
-            //     Tables\Actions\RestoreBulkAction::make(),
-            // ]),
-        ]);
+    return RolesTable::configure($table);
+
 }
     public static function getPages(): array
     {
@@ -55,11 +47,4 @@ class RoleResource extends Resource
         ];
     }
 
-    public static function getRecordRouteBindingEloquentQuery(): Builder
-    {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
 }
